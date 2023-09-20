@@ -43,7 +43,7 @@ function createBook(event) {
   bookName = document.getElementById("input-name");
   author = document.getElementById("input-author");
   topic = document.getElementById("topic-select");
-  if (bookName == "" || author == "" || topic == "") {
+  if (bookName.value == "" || author.value == "" || topic.value == "") {
     alert("Please enter complete information!");
     return;
   }
