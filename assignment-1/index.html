@@ -1,14 +1,132 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Bookstore</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-  </head>
 
-  <body>
-    Hello world
-    <script src="script.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Bookstore</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <nav class="nav">
+        <div id="nav-logo">Bookstore</div>
+        <div id="nav-profile">
+          <div class="avatar"><img src="user.png" alt="avatar" class="avatar-img"></div>
+          <div id="user-name">Felix Nguyen</div>
+        </div>
+      </nav>
+    </header>
+    <article class="content">
+      <section>
+        <div class="action-bar">
+          <input type="text" class="search-bar" id="search-bar" placeholder="Seach books">
+          <button class="btn btn-primary" id="btn-add">Add book</button>
+        </div>
+        <div>
+          <table class="table" id="bookstore-table">
+            <caption class="table-caption">Book store</caption>
+            <thead>
+              <tr class="table-header">
+                <th class="table-header__item">No</th>
+                <th class="table-header__item">Name</th>
+                <th class="table-header__item">Author</th>
+                <th class="table-header__item">Topic</th>
+                <th class="table-header__item">Action</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+
+            </tbody>
+            <tfoot id="table-footer">
+              <tr>
+                <td class="table-data__item" id="total-books__label" colspan="5">Total of books: <span
+                    id="total-books"></span></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+      <div class="modal">
+        <div id="dialog-delete" class="dialog">
+          <div>
+            <button class="close btn-action"><i class="fa-solid fa-x"></i></button>
+          </div>
+          <p class="dialog-label">Delete book</p>
+          <p class="dialog-message">Do you want to delete the <br><strong id="book-name__strong">refactoring</strong>
+            book?
+          </p>
+          <div class="option">
+            <button class="btn btn-secondary" id="btn-delete">Delete</button>
+            <button class="btn btn-primary" id="btn-cancel">Cancel</button>
+          </div>
+        </div>
+        <div id="dialog-add" class="dialog">
+          <div>
+            <button class="close btn-action"><i class="fa-solid fa-x"></i></button>
+          </div>
+          <p class="dialog-label">Add book</p>
+          <form class="form">
+            <div>
+              <p class="label">Name</p>
+              <input type="text" class="input" id="input-name" name="name">
+            </div>
+            <div>
+              <p class="label">Author</p>
+              <input type="text" class="input" id="input-author" name="author">
+            </div>
+            <div>
+              <p class="label">Topic</p>
+              <select name="topic" id="topic-select" class="input">
+                <option value="Programming">Programming</option>
+                <option value="Database">Database</option>
+                <option value="DevOps">DevOps</option>
+              </select>
+            </div>
+          </form>
+          <div class="option">
+            <button type="submit" class="btn btn-primary btn-right" id="btn-create">Create</button>
+          </div>
+        </div>
+        <div id="dialog-edit" class="dialog">
+          <div>
+            <button class="close btn-action"><i class="fa-solid fa-x"></i></button>
+          </div>
+          <p class="dialog-label">Edit book</p>
+          <form class="form">
+            <div>
+              <p class="label">Name</p>
+              <input type="text" class="input" id="edit-name" name="name">
+            </div>
+            <div>
+              <p class="label">Author</p>
+              <input type="text" class="input" id="edit-author" name="author">
+            </div>
+            <div>
+              <p class="label">Topic</p>
+              <select name="topic" id="edit-topic-select" class="input">
+                <option value="Programming">Programming</option>
+                <option value="Database">Database</option>
+                <option value="DevOps">DevOps</option>
+              </select>
+            </div>
+          </form>
+          <div class="option">
+            <button type="submit" class="btn btn-primary btn-right" id="btn-edit">Edit</button>
+          </div>
+        </div>
+      </div>
+    </article>
+    <footer class="footer">
+      <div>
+        Copyright © Nguyen Phu Loc - 2023
+      </div>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+
 </html>
