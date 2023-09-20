@@ -43,6 +43,10 @@ function createBook(event) {
   bookName = document.getElementById("input-name");
   author = document.getElementById("input-author");
   topic = document.getElementById("topic-select");
+  if (bookName == "" || author == "" || topic == "") {
+    alert("Please enter complete information!");
+    return;
+  }
   let book = {
     id: generatedId,
     bookName: bookName.value,
@@ -56,14 +60,6 @@ function createBook(event) {
   bookName.value = "";
   author.value = "";
   dialogAdd.style.display = "none";
-}
-
-function showList(books) {
-  let str = "";
-  books.forEach(function (item) {
-    str += item.bookName + " | ";
-  });
-  return str;
 }
 
 function generateId() {
