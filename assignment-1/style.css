@@ -96,6 +96,7 @@ html {
 }
 
 .content {
+  width: 90%;
   max-width: 1200px;
   position: relative;
   margin: 0 auto;
@@ -457,14 +458,12 @@ html {
   }
 
   .search-bar {
-    width: 95%;
-    padding: 0;
+    width: 90%;
+    padding: 4px 0;
     margin: 16px 0;
   }
   .content {
-    margin: 0 4px;
-  }
-  .footer {
-    position: relative;
+    margin: 0 auto;
+    width: 90%;
   }
 }

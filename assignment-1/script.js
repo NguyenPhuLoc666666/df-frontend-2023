@@ -134,7 +134,7 @@ function searchBook(event) {
   books = getData();
   let arrOfBooks = [];
   books.forEach(function (item) {
-    if (item.bookName.toLowerCase().includes(event.target.value))
+    if (item.bookName.toLowerCase().includes(event.target.value.toLowerCase()))
       arrOfBooks.push(item);
   });
   showBookstore(arrOfBooks);
