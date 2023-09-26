@@ -1,6 +1,6 @@
 import Button from "./Button";
 
-function DialogCreate({ ...handle }) {
+function DialogCreate({ darkMode, ...handle }) {
   function generateId() {
     let timestamp = Date.now();
     let rand = Math.floor(Math.random() * 1000);
@@ -22,7 +22,10 @@ function DialogCreate({ ...handle }) {
 
   return (
     <>
-      <div id="dialog-add" className="dialog">
+      <div
+        id="dialog-add"
+        className={`dialog ${darkMode === true ? "dark-mode" : ""}`}
+      >
         <div>
           <button
             className="btn-action btn-close"

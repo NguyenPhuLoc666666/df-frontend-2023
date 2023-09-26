@@ -1,9 +1,17 @@
 import Button from "./Button";
 
-function DialogDelete({ currentBook, handleCloseDialog, handleDeleteBook }) {
+function DialogDelete({
+  currentBook,
+  darkMode,
+  handleCloseDialog,
+  handleDeleteBook,
+}) {
   return (
     <>
-      <div id="dialog-delete" className="dialog">
+      <div
+        id="dialog-delete"
+        className={`dialog ${darkMode === true ? "dark-mode" : ""}`}
+      >
         <div>
           <button
             className="btn-action btn-close"

@@ -1,9 +1,9 @@
-function Button({ children, ...buttonProps }) {
+function Button({ children, handle, ...buttonProps }) {
   return (
     <button
       {...buttonProps}
       onClick={() => {
-        buttonProps.handle(buttonProps.data);
+        handle(buttonProps.data);
       }}
     >
       {children}

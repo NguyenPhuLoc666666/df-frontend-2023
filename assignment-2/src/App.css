@@ -8,6 +8,7 @@ img,
 b,
 u,
 i,
+ul,
 li,
 form,
 table,
@@ -39,6 +40,8 @@ body {
   line-height: 1;
   min-height: 100%;
   position: relative;
+  background-color: whitesmoke;
+  padding-bottom: 50px;
 }
 ol,
 ul {
@@ -52,9 +55,9 @@ table {
 
 html {
   height: 100%;
+  min-height: 100%;
   width: 100%;
   position: relative;
-  background-color: whitesmoke;
   font-family: sans-serif;
 }
 #dialog-edit {
@@ -75,6 +78,7 @@ html {
 
 ::-webkit-scrollbar {
   width: 2px;
+  height: 2px;
 }
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
@@ -112,6 +116,7 @@ html {
   top: 0;
   left: 0;
   z-index: 1000;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .nav {
@@ -273,7 +278,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 250px;
+  width: auto;
   height: auto;
 }
 
@@ -377,6 +382,89 @@ html {
   justify-content: space-around;
   margin-top: 20px;
   width: 100%;
+}
+.pagination-container {
+  margin: 8px 0;
+  width: 100%;
+}
+.pagination {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto;
+}
+.pagination .page-link {
+  background-color: inherit;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  padding: 8px;
+}
+.pagination .page-item {
+  border: solid 1px blue;
+  margin: 0 4px;
+}
+.pagination .active {
+  background-color: rgb(104, 104, 196);
+  color: white;
+}
+
+.pagination .disable {
+  background-color: grey;
+}
+.toggle {
+  display: flex;
+  margin: 0 16px;
+}
+#dark-mode-toggle {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+#dark-mode-label {
+  width: 46px;
+  height: 24px;
+  position: relative;
+  display: block;
+  background-color: white;
+  border-radius: 200px;
+  box-shadow: inset 0px 5px 5px rgba(0, 0, 0, 0.4),
+    inset 0px -5px 10px rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: 0.3s;
+}
+#dark-mode-label::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: linear-gradient(180deg, #ffcc89, #d8860b);
+  border-radius: 200px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+#dark-mode-toggle:checked + #dark-mode-label {
+  background-color: #424040;
+}
+#dark-mode-toggle:checked + #dark-mode-label::after {
+  transform: translateX(100%);
+  background: linear-gradient(180deg, gainsboro, #3a3a3a);
+  transition: 0.3s;
+}
+
+.dark-mode {
+  background-color: rgb(37, 28, 49) !important;
+  box-shadow: 0px 5px 10px rgba(166, 165, 165, 0.2);
+  color: white !important;
+}
+
+.text-white {
+  color: white !important;
 }
 
 @media only screen and (max-width: 46.1875em) {

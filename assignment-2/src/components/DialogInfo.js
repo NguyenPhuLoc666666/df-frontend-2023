@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Button from "./Button";
 
-function DialogInfo({ currentBook, ...handle }) {
+function DialogInfo({ currentBook, darkMode, ...handle }) {
   const [book, setBook] = useState({
     id: 0,
     bookName: "",
@@ -34,7 +34,10 @@ function DialogInfo({ currentBook, ...handle }) {
 
   return (
     <>
-      <div id="dialog-edit" className="dialog">
+      <div
+        id="dialog-edit"
+        className={`dialog ${darkMode === true ? "dark-mode" : ""}`}
+      >
         <div>
           <button
             className="btn-action btn-close"

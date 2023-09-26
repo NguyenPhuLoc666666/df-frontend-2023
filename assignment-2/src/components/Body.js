@@ -14,11 +14,20 @@ function Body() {
   const [currentBook, setCurrentBook] = useState({});
   const [books, setBooks] = useState([]);
   const [searchingValue, setSearchingValue] = useState("");
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem("darkMode");
+    return savedDarkMode === "true";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", darkMode);
+    document.body.classList.toggle("dark-mode", darkMode === true);
+  }, [darkMode]);
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("bookstore"));
     let data;
-    if (storedData !== null) {
+    if (storedData != null) {
       data = storedData;
     } else {
       data = MockTestData;
@@ -82,8 +91,9 @@ function Body() {
       book.author = editingBook.updatedAuthor;
       book.topic = editingBook.updatedTopic;
       storeData(books);
-      renderBooks(books);
       handleCloseDialog("dialogInfo");
+      setSearchingValue("");
+      renderBooks(books);
       setTimeout(() => alert("Edit book successful!"), 250);
     }
   };
@@ -93,8 +103,9 @@ function Body() {
     if (index !== -1) {
       books.splice(index, 1);
       storeData(books);
-      renderBooks(books);
       handleCloseDialog("dialogDelete");
+      setSearchingValue("");
+      renderBooks(books);
       setTimeout(() => alert("Delete book successful!"), 250);
     }
   };
@@ -116,10 +127,11 @@ function Body() {
       author: author,
       topic: topic,
     };
-    books.unshift(book);
+    books.push(book);
     storeData(books);
-    renderBooks(books);
     handleCloseDialog("dialogCreate");
+    setSearchingValue("");
+    renderBooks(books);
     setTimeout(() => alert("Add book successful!"), 250);
   };
 
@@ -131,7 +143,7 @@ function Body() {
             type="text"
             className="search-bar"
             id="search-bar"
-            placeholder="Seach books"
+            placeholder="Seach books..."
             value={searchingValue}
             onChange={(e) => setSearchingValue(e.target.value.toLowerCase())}
           />
@@ -145,6 +157,7 @@ function Body() {
           </Button>
         </div>
         <BookTable
+          darkMode={darkMode}
           books={books}
           searchingValue={searchingValue}
           renderBooks={renderBooks}
@@ -152,12 +165,14 @@ function Body() {
       </section>
       {dialogCreate && (
         <DialogCreate
+          darkMode={darkMode}
           handleCloseDialogCreate={handleCloseDialogCreate}
           handleAddBook={handleAddBook}
         />
       )}
       {dialogInfo && (
         <DialogInfo
+          darkMode={darkMode}
           currentBook={currentBook}
           handleEditBook={handleEditBook}
           handleCloseDialog={handleCloseDialog}
@@ -165,6 +180,7 @@ function Body() {
       )}
       {dialogDelete && (
         <DialogDelete
+          darkMode={darkMode}
           currentBook={currentBook}
           handleCloseDialog={handleCloseDialog}
           handleDeleteBook={handleDeleteBook}
