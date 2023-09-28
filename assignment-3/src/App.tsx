@@ -1,24 +1,29 @@
-import logo from './logo.svg'
+import React, {FC, 
+  useEffect, useState
+} from 'react'
 import './App.css'
+import Header from './components/Header'
+import Body from './components/Body'
+import Footer from './components/Footer'
 
-function App() {
+const App: FC = () => {
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem('darkMode')
+    return savedDarkMode === 'true'
+  })
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(darkMode))
+    document.body.classList.toggle('dark-mode', darkMode === true)
+  }, [darkMode])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Header 
+       darkMode={darkMode} setDarkMode={setDarkMode}
+      /> 
+       <Body darkMode={darkMode} />
+      <Footer darkMode={darkMode} /> 
     </div>
   )
 }
