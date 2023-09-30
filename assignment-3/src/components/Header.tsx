@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import Avatar from '../assets/user.png'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 
 const Header: FC<Props> = ({ darkMode, setDarkMode }) => {
   return (
-    <header className={`header ${darkMode === true ? 'dark-mode' : ''}`}>
+    <header className={`header ${darkMode ? 'dark-mode' : ''}`}>
       <nav className="nav">
         <div id="nav-logo">Bookstore</div>
         <div id="nav-profile">
@@ -17,9 +17,13 @@ const Header: FC<Props> = ({ darkMode, setDarkMode }) => {
               <input
                 type="checkbox"
                 id="dark-mode-toggle"
-                defaultChecked={darkMode}
-                onClick={() => setDarkMode(!darkMode)}
+                checked={darkMode}
+                onChange={() => {
+                  setDarkMode(!darkMode)
+                }}
               />
+              <div className="toggle-indicator" />
+              <div className="dark-mode-background" />
             </label>
           </div>
           <div className="avatar">

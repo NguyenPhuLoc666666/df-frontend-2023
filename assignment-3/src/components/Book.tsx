@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { IBook } from '../type/IBook'
+import React, { type FC } from 'react'
+import { type IBook } from '../type/IBook'
 
 interface Props {
   book: IBook

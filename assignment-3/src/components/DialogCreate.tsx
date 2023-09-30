@@ -1,5 +1,5 @@
-import { FC, useState } from 'react'
-import { IBook } from '../type/IBook'
+import React, { type FC, useState, useEffect } from 'react'
+import { type IBook } from '../type/IBook'
 
 interface Props {
   darkMode: boolean
@@ -17,16 +17,20 @@ const DialogCreate: FC<Props> = ({
     author: '',
     topic: 'Programming',
   })
+
+  useEffect(() => {
+    const generatedId: string = generateId()
+    setBook({ ...book, id: generatedId })
+  }, [])
+
   const generateId = (): string => {
     const timestamp: string = Date.now().toString()
     const rand: number = Math.floor(Math.random() * 1000)
     return `${timestamp}-${rand}`
   }
 
-  function handleAddNewBook() {
-    const generatedId: string = generateId()
-    setBook({ ...book, id: generatedId })
-    alert(`book ${book.topic}`)
+  const handleAddNewBook = (): void => {
+    alert('book.id: ' + book.id)
     if (book.bookName === '' || book.author === '' || book.topic === '') {
       alert('Please enter complete information when add new book!')
       return
@@ -36,18 +40,15 @@ const DialogCreate: FC<Props> = ({
   }
 
   return (
-    <div
-      id="dialog-add"
-      className={`dialog ${darkMode === true ? 'dark-mode' : ''}`}
-    >
+    <div id="dialog-add" className={`dialog ${darkMode ? 'dark-mode' : ''}`}>
       <div>
         <button
           className="btn-action btn-close"
-          onClick={() => handleCloseDialogCreate('dialogCreate')}
+          onClick={() => {
+            handleCloseDialogCreate('dialogCreate')
+          }}
         >
-          <span className={`${darkMode === true ? 'text-white' : ''}`}>
-            &times;
-          </span>
+          <span className={`${darkMode ? 'text-white' : ''}`}>&times;</span>
         </button>
       </div>
       <p className="dialog-label">Add book</p>
@@ -61,7 +62,9 @@ const DialogCreate: FC<Props> = ({
             name="name"
             placeholder="book name..."
             value={book.bookName}
-            onChange={(e) => setBook({ ...book, bookName: e.target.value })}
+            onChange={(e) => {
+              setBook({ ...book, bookName: e.target.value })
+            }}
           />
         </div>
         <div>
@@ -73,7 +76,9 @@ const DialogCreate: FC<Props> = ({
             name="author"
             placeholder="author..."
             value={book.author}
-            onChange={(e) => setBook({ ...book, author: e.target.value })}
+            onChange={(e) => {
+              setBook({ ...book, author: e.target.value })
+            }}
           />
         </div>
         <div>
@@ -83,7 +88,9 @@ const DialogCreate: FC<Props> = ({
             id="topic-select"
             className="input"
             value={book.topic}
-            onChange={(e) => setBook({ ...book, topic: e.target.value })}
+            onChange={(e) => {
+              setBook({ ...book, topic: e.target.value })
+            }}
           >
             <option value="Programming">Programming</option>
             <option value="Database">Database</option>

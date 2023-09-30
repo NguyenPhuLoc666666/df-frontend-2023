@@ -1,6 +1,4 @@
-import React, {FC, 
-  useEffect, useState
-} from 'react'
+import React, { type FC, useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header'
 import Body from './components/Body'
@@ -14,16 +12,14 @@ const App: FC = () => {
 
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(darkMode))
-    document.body.classList.toggle('dark-mode', darkMode === true)
+    document.body.classList.toggle('dark-mode', darkMode)
   }, [darkMode])
 
   return (
     <div className="container">
-      <Header 
-       darkMode={darkMode} setDarkMode={setDarkMode}
-      /> 
-       <Body darkMode={darkMode} />
-      <Footer darkMode={darkMode} /> 
+      <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+      <Body darkMode={darkMode} />
+      <Footer darkMode={darkMode} />
     </div>
   )
 }

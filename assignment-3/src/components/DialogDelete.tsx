@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { IBook } from '../type/IBook'
+import React, { type FC } from 'react'
+import { type IBook } from '../type/IBook'
 
 interface Props {
   currentBook: IBook
@@ -14,18 +14,15 @@ const DialogDelete: FC<Props> = ({
   handleDeleteBook,
 }) => {
   return (
-    <div
-      id="dialog-delete"
-      className={`dialog ${darkMode === true ? 'dark-mode' : ''}`}
-    >
+    <div id="dialog-delete" className={`dialog ${darkMode ? 'dark-mode' : ''}`}>
       <div>
         <button
           className="btn-action btn-close"
-          onClick={() => handleCloseDialog('dialogDelete')}
+          onClick={() => {
+            handleCloseDialog('dialogDelete')
+          }}
         >
-          <span className={`${darkMode === true ? 'text-white' : ''}`}>
-            &times;
-          </span>
+          <span className={`${darkMode ? 'text-white' : ''}`}>&times;</span>
         </button>
       </div>
       <p className="dialog-label">Delete book</p>
@@ -37,17 +34,21 @@ const DialogDelete: FC<Props> = ({
       <div className="option">
         <button
           className="btn btn-secondary"
-          id="btn-cancel-deleting-book"
-          onClick={() => handleCloseDialog('dialogDelete')}
+          id="btn-delete-book"
+          onClick={() => {
+            handleDeleteBook(currentBook)
+          }}
         >
-          Cancel
+          Delete
         </button>
         <button
           className="btn btn-primary"
-          id="btn-delete-book"
-          onClick={() => handleDeleteBook(currentBook)}
+          id="btn-cancel-deleting-book"
+          onClick={() => {
+            handleCloseDialog('dialogDelete')
+          }}
         >
-          Delete
+          Cancel
         </button>
       </div>
     </div>

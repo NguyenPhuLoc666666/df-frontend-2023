@@ -1,5 +1,5 @@
-import React, { FC, ReactNode, useState } from 'react'
-import { IBook } from '../type/IBook'
+import React, { type FC, type ReactNode, useEffect, useState } from 'react'
+import { type IBook } from '../type/IBook'
 
 interface Props {
   books: IBook[]
@@ -15,21 +15,25 @@ const BookTable: FC<Props> = ({ books, darkMode, renderBooks }) => {
   const nPages: number = Math.ceil(books.length / recordsPerPage)
   const numbers = [...Array(nPages + 1).keys()].slice(1)
 
-  function prevPage() {
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [books])
+
+  const prevPage = (): void => {
     if (currentPage === 1) {
       setCurrentPage(currentPage)
     } else if (currentPage !== firstIndex) {
       setCurrentPage(currentPage - 1)
     }
   }
-  function nextPage() {
+  const nextPage = (): void => {
     if (currentPage === nPages) {
       setCurrentPage(currentPage)
     } else if (currentPage !== lastIndex) {
       setCurrentPage(currentPage + 1)
     }
   }
-  function changeCurrentPage(page: number) {
+  const changeCurrentPage = (page: number): void => {
     setCurrentPage(page)
   }
   return (
@@ -37,7 +41,7 @@ const BookTable: FC<Props> = ({ books, darkMode, renderBooks }) => {
       <table className="table" id="bookstore-table">
         <caption className="table-caption">Book store</caption>
         <thead>
-          <tr className={`table-header ${darkMode === true ? 'bg-black' : ''}`}>
+          <tr className={`table-header ${darkMode ? 'bg-black' : ''}`}>
             <th className="table-header__item">No</th>
             <th className="table-header__item">Name</th>
             <th className="table-header__item">Author</th>
@@ -61,18 +65,18 @@ const BookTable: FC<Props> = ({ books, darkMode, renderBooks }) => {
       </table>
       <nav
         className={`pagination-container ${
-          darkMode === true ? 'text-white border-white' : ''
+          darkMode ? 'text-white border-white' : ''
         }`}
       >
         <ul className="pagination">
           <li
             className={`page-item ${currentPage === 1 ? 'disable' : ''}  ${
-              darkMode === true ? 'border-white' : ''
+              darkMode ? 'border-white' : ''
             }`}
           >
             <button
               className={`page-link ${
-                darkMode === true ? 'text-white border-white' : ''
+                darkMode ? 'text-white border-white' : ''
               }`}
               onClick={prevPage}
             >
@@ -82,15 +86,17 @@ const BookTable: FC<Props> = ({ books, darkMode, renderBooks }) => {
           {numbers.map((page, i) => (
             <li
               className={`page-item ${currentPage === page ? 'active' : ''}  ${
-                darkMode === true ? 'border-white' : ''
+                darkMode ? 'border-white' : ''
               }`}
               key={i}
             >
               <button
                 className={`page-link ${
-                  darkMode === true ? 'text-white border-white' : ''
+                  darkMode ? 'text-white border-white' : ''
                 }`}
-                onClick={() => changeCurrentPage(page)}
+                onClick={() => {
+                  changeCurrentPage(page)
+                }}
               >
                 {page}
               </button>
@@ -98,11 +104,11 @@ const BookTable: FC<Props> = ({ books, darkMode, renderBooks }) => {
           ))}
           <li
             className={`page-item ${currentPage === nPages ? 'disable' : ''} 
-            ${darkMode === true ? 'border-white' : ''}`}
+            ${darkMode ? 'border-white' : ''}`}
           >
             <button
               className={`page-link ${
-                darkMode === true ? 'text-white border-white' : ''
+                darkMode ? 'text-white border-white' : ''
               }`}
               onClick={nextPage}
             >

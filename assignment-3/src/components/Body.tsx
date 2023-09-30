@@ -1,11 +1,11 @@
-import React, { FC, ReactNode, useEffect, useState } from 'react'
+import React, { type FC, type ReactNode, useEffect, useState } from 'react'
 import BookTable from './BookTable'
 import DialogCreate from './DialogCreate'
 import DialogInfo from './DialogInfo'
 import DialogDelete from './DialogDelete'
 import { MockTestData } from '../testData/MockTestData'
 import Book from './Book'
-import { IBook } from '../type/IBook'
+import { type IBook } from '../type/IBook'
 
 interface Props {
   darkMode: boolean
@@ -22,7 +22,7 @@ const Body: FC<Props> = ({ darkMode }) => {
   })
   const [books, setBooks] = useState<IBook[]>([])
   const [searchingValue, setSearchingValue] = useState('')
-  // const [filteredBooks, setFilteredBooks] = useState<IBook[]>(books);
+  const [filteredBooks, setFilteredBooks] = useState<IBook[]>(books)
 
   useEffect(() => {
     const storedData: string | null = localStorage.getItem('bookstore')
@@ -34,33 +34,33 @@ const Body: FC<Props> = ({ darkMode }) => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (typeof searchingValue === "string" && searchingValue.trim() !== "") {
-  //     const filteredData = books.filter((book) =>
-  //       book.bookName.toLowerCase().includes(searchingValue.toLowerCase())
-  //     );
-  //     setFilteredBooks(filteredData);
-  //   } else {
-  //     setFilteredBooks(books);
-  //   }
-  // }, [searchingValue, books]);
+  useEffect(() => {
+    if (typeof searchingValue === 'string' && searchingValue.trim() !== '') {
+      const filteredData = books.filter((book) =>
+        book.bookName.toLowerCase().includes(searchingValue.toLowerCase()),
+      )
+      setFilteredBooks(filteredData)
+    } else {
+      setFilteredBooks(books)
+    }
+  }, [searchingValue, books])
 
-  const storeData = (data: IBook[]) => {
+  const storeData = (data: IBook[]): void => {
     setBooks(data)
     localStorage.setItem('bookstore', JSON.stringify(data))
   }
 
-  const handleOpenDialogCreate = () => {
+  const handleOpenDialogCreate = (): void => {
     setDialogCreate(true)
     setDialogInfo(false)
     setDialogDelete(false)
   }
 
-  const handleCloseDialogCreate = () => {
+  const handleCloseDialogCreate = (): void => {
     setDialogCreate(false)
   }
 
-  const handleOpenDialog = (dialog: string, book: IBook) => {
+  const handleOpenDialog = (dialog: string, book: IBook): void => {
     setCurrentBook(book)
     switch (dialog) {
       case 'dialogInfo':
@@ -78,7 +78,7 @@ const Body: FC<Props> = ({ darkMode }) => {
     }
   }
 
-  const handleCloseDialog = (dialog: string) => {
+  const handleCloseDialog = (dialog: string): void => {
     switch (dialog) {
       case 'dialogInfo':
         setDialogInfo(false)
@@ -91,7 +91,7 @@ const Body: FC<Props> = ({ darkMode }) => {
     }
   }
 
-  const handleEditBook = (editingBook: IBook) => {
+  const handleEditBook = (editingBook: IBook): void => {
     const index: number = books.findIndex((book) => book.id === editingBook.id)
     if (index !== -1) {
       const book: IBook = books[index]
@@ -102,11 +102,13 @@ const Body: FC<Props> = ({ darkMode }) => {
       handleCloseDialog('dialogInfo')
       setSearchingValue('')
       renderBooks(books)
-      setTimeout(() => alert('Edit book successful!'), 250)
+      setTimeout(() => {
+        alert('Edit book successful!')
+      }, 250)
     }
   }
 
-  const handleDeleteBook = (deletingBook: IBook) => {
+  const handleDeleteBook = (deletingBook: IBook): void => {
     const index: number = books.findIndex((book) => book.id === deletingBook.id)
     if (index !== -1) {
       books.splice(index, 1)
@@ -114,7 +116,9 @@ const Body: FC<Props> = ({ darkMode }) => {
       handleCloseDialog('dialogDelete')
       setSearchingValue('')
       renderBooks(books)
-      setTimeout(() => alert('Delete book successful!'), 250)
+      setTimeout(() => {
+        alert('Delete book successful!')
+      }, 250)
     }
   }
 
@@ -129,13 +133,15 @@ const Body: FC<Props> = ({ darkMode }) => {
     ))
   }
 
-  const handleAddBook = ({ id, bookName, author, topic }: IBook) => {
+  const handleAddBook = ({ id, bookName, author, topic }: IBook): void => {
     books.push({ id, bookName, author, topic })
     storeData(books)
     handleCloseDialog('dialogCreate')
     setSearchingValue('')
     renderBooks(books)
-    setTimeout(() => alert('Add book successful!'), 250)
+    setTimeout(() => {
+      alert('Add book successful!')
+    }, 250)
   }
 
   return (
@@ -148,10 +154,14 @@ const Body: FC<Props> = ({ darkMode }) => {
             id="search-bar"
             placeholder="Seach books..."
             value={searchingValue}
-            onChange={(e) => setSearchingValue(e.target.value)}
+            onChange={(e) => {
+              setSearchingValue(e.target.value)
+            }}
           />
           <button
-            onClick={() => handleOpenDialogCreate()}
+            onClick={() => {
+              handleOpenDialogCreate()
+            }}
             className="btn btn-primary"
             id="btn-add"
           >
@@ -160,7 +170,7 @@ const Body: FC<Props> = ({ darkMode }) => {
         </div>
         <BookTable
           darkMode={darkMode}
-          books={books}
+          books={filteredBooks}
           renderBooks={renderBooks}
         />
       </section>

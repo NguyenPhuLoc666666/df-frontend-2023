@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals'
 
 const rootElement = document.getElementById('root')
 
-if (rootElement) {
+if (rootElement != null) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <React.StrictMode>
