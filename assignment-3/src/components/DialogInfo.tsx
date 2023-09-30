@@ -1,4 +1,4 @@
-import React, { type FC, useState } from 'react'
+import React, { type FC, useState, useEffect } from 'react'
 import { type IBook } from '../type/IBook'
 
 interface Props {
@@ -14,6 +14,10 @@ const DialogInfo: FC<Props> = ({
   handleCloseDialog,
 }) => {
   const [book, setBook] = useState<IBook>(currentBook)
+
+  useEffect(() => {
+    setBook(currentBook)
+  }, [currentBook])
 
   const handleEditBookInDialog = (): void => {
     if (book.bookName === '' || book.author === '' || book.topic === '') {

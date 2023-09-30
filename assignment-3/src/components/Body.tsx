@@ -152,7 +152,7 @@ const Body: FC<Props> = ({ darkMode }) => {
             type="text"
             className="search-bar"
             id="search-bar"
-            placeholder="Seach books..."
+            placeholder="Search books..."
             value={searchingValue}
             onChange={(e) => {
               setSearchingValue(e.target.value)
