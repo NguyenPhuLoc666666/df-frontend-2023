@@ -4,5 +4,8 @@
 	},
 	"scripts": {
 		"prepare": "husky install"
+	},
+	"dependencies": {
+		"file-loader": "^6.2.0"
 	}
 }

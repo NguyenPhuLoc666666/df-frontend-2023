@@ -18,10 +18,59 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+.active {
+  background-color: rgb(104, 104, 196);
+  color: white;
+}
+
+.disable {
+  background-color: grey;
+}
+
+#dark-mode-toggle:checked + .toggle-indicator {
+  transform: translateX(100%);
+  background: linear-gradient(180deg, gainsboro, #5e5d5d);
+  transition: 0.3s;
+}
+
+#dark-mode-toggle:checked ~ .dark-mode-background {
+  background-color: #000000;
+}
+
+.dark {
+  background-color: rgb(37, 28, 49) !important;
+  box-shadow: 0px 5px 10px rgba(202, 179, 179, 0.5);
+  color: white !important;
+}
+
+.text-white {
+  color: white;
+}
+
+.bg-black {
+  background-color: black;
+}
+
+.border-white {
+  border-color: white;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #000000;
+}
+
+@media only screen and (max-width: 46.1875em) {
+  .table-data__item::before {
+    content: attr(data-title) ': ';
+    float: left;
+  }
 }
