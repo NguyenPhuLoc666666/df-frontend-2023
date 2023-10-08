@@ -9,6 +9,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'next',
     'next/core-web-vitals',
+    'prettier',
   ],
   ignorePatterns: ['node_modules/'],
   env: {
@@ -42,7 +43,7 @@ module.exports = {
         'react/jsx-sort-props': 'off',
         'react/function-component-definition': 'off',
         'no-shadow': 'off',
-        semi: ['error', 'always'],
+        'no-console': 'off',
       },
     },
   ],

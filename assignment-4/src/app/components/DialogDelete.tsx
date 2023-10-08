@@ -14,9 +14,9 @@ const DialogDelete: FC<Props> = ({
   return (
     <div
       id="dialog-delete"
-      className={`dark:bg-indigo-950 dark:text-white dark:shadow-white w-[350px] h-auto z-[1001]
+      className="dark:bg-inherit dark:text-white dark:shadow-white w-[350px] h-auto z-[1001]
        bg-white text-black flex flex-col p-2 justify-start items-start m-auto rounded border-black
-        fixed top-20 left-1/2 translate-x-[-50%] shadow-md shadow-slate-900`}
+        fixed top-20 left-1/2 translate-x-[-50%] shadow-md shadow-slate-900"
     >
       <div>
         <button
@@ -45,7 +45,7 @@ const DialogDelete: FC<Props> = ({
           Delete
         </button>
         <button
-          className="btn hover:bg-red-300 bg-red-700 text-white ml-2 active:bg-gray-500 p-2 w-24 rounded cursor-pointer block mr-6 ml-auto"
+          className="btn hover:bg-red-300 bg-red-700 text-white active:bg-gray-500 p-2 w-24 rounded cursor-pointer block mr-6 ml-auto"
           id="btn-cancel-deleting-book"
           onClick={() => {
             handleOpenDialog('dialogDelete')

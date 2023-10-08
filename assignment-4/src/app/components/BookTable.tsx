@@ -1,26 +1,42 @@
-import React, {
-  type FC,
-  type ReactNode,
-  useEffect,
-  useState,
-  useContext,
-} from 'react'
+import React, { type FC, type ReactNode, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { type IBook } from '../type/IBook'
-import Book from './Book'
 
 interface Props {
   books: IBook[]
-  renderBooks: (books: IBook[], currentPage, recordsPerPage) => ReactNode
+  renderBooks: (
+    books: IBook[],
+    currentPage: number,
+    recordsPerPage: number,
+  ) => ReactNode
+  searchingValue: string
 }
-const BookTable: FC<Props> = ({ books, renderBooks }) => {
+const BookTable: FC<Props> = ({ books, renderBooks, searchingValue }) => {
+  const [filteredBooks, setFilteredBooks] = useState<IBook[]>(books)
   const [currentPage, setCurrentPage] = useState(1)
   const recordsPerPage: number = 5
   const lastIndex: number = currentPage * recordsPerPage
   const firstIndex: number = lastIndex - recordsPerPage
-  const records: IBook[] = books.slice(firstIndex, lastIndex)
-  const nPages: number = Math.ceil(books.length / recordsPerPage)
+  const records: IBook[] = filteredBooks.slice(firstIndex, lastIndex)
+  const nPages: number = Math.ceil(filteredBooks.length / recordsPerPage)
   const numbers = Array.from({ length: nPages }, (_, i) => i + 1)
+  const router = useRouter()
 
+  useEffect(() => {
+    if (typeof searchingValue === 'string' && searchingValue.trim() !== '') {
+      const filteredData = books.filter((book) =>
+        book.bookName.toLowerCase().includes(searchingValue.toLowerCase()),
+      )
+      setFilteredBooks(filteredData)
+    } else {
+      setFilteredBooks(books)
+    }
+    setCurrentPage(1)
+  }, [searchingValue, books])
+
+  useEffect(() => {
+    router.push(`?q=${searchingValue}&page=${currentPage}`, { scroll: false })
+  }, [searchingValue, currentPage, router])
   useEffect(() => {
     setCurrentPage(1)
   }, [books])
@@ -51,9 +67,7 @@ const BookTable: FC<Props> = ({ books, renderBooks }) => {
       >
         <caption className="text-3xl font-black my-4">Book store</caption>
         <thead>
-          <tr
-            className={`table-auto table-header border-solid border-2 bg-gray-500 flex`}
-          >
+          <tr className="table-auto table-header border-solid border-2 bg-gray-500 flex">
             <th className="hidden md:block border-solid border-2 font-bold p-2 md:w-[5%]">
               No
             </th>
@@ -78,22 +92,19 @@ const BookTable: FC<Props> = ({ books, renderBooks }) => {
           <tr className="block">
             <td className="block" id="total-books__label" colSpan={5}>
               Total of books:
-              <span id="total-books">{books.length}</span>
+              <span id="total-books">{filteredBooks.length}</span>
             </td>
           </tr>
         </tfoot>
       </table>
-      <nav className={`w-full my-2`}>
+      <nav className="w-full my-2">
         <ul className="w-full flex items-center justify-center my-2 mx-auto">
           <li
             className={`mx-1 border-solid border-blue-500 ${
               currentPage === 1 ? 'disable' : ''
             }`}
           >
-            <button
-              className={`no-underline p-2 bg-inherit`}
-              onClick={prevPage}
-            >
+            <button className="no-underline p-2 bg-inherit" onClick={prevPage}>
               Prev
             </button>
           </li>

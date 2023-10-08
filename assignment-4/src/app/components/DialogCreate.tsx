@@ -1,4 +1,4 @@
-import React, { type FC, useState, useEffect } from 'react'
+import React, { type FC, useState } from 'react'
 import { type IBook } from '../type/IBook'
 
 interface Props {
@@ -16,11 +16,6 @@ const DialogCreate: FC<Props> = ({
     topic: 'Programming',
   })
 
-  useEffect(() => {
-    const generatedId: string = generateId()
-    setBook({ ...book, id: generatedId })
-  }, [])
-
   const generateId = (): string => {
     const timestamp: string = Date.now().toString()
     const rand: number = Math.floor(Math.random() * 1000)
@@ -28,6 +23,8 @@ const DialogCreate: FC<Props> = ({
   }
 
   const handleAddNewBook = (): void => {
+    const generatedId: string = generateId()
+    setBook({ ...book, id: generatedId })
     if (book.bookName === '' || book.author === '' || book.topic === '') {
       alert('Please enter complete information when add new book!')
       return
@@ -39,7 +36,7 @@ const DialogCreate: FC<Props> = ({
   return (
     <div
       id="dialog-create"
-      className="dark:bg-indigo-950 dark:text-white dark:shadow-white w-[350px] h-auto z-[1001]
+      className="dark:bg-inherit dark:text-white dark:shadow-white w-[350px] h-auto z-[1001]
        bg-white text-black flex flex-col p-2 justify-start items-start m-auto rounded border-black
        fixed top-20 left-1/2 translate-x-[-50%] shadow-md shadow-slate-900"
     >
@@ -105,7 +102,7 @@ const DialogCreate: FC<Props> = ({
       <div className="flex justify-around mt-5 w-full">
         <button
           type="submit"
-          className="btn hover:bg-red-300 bg-red-700 text-white ml-2 active:bg-gray-500 p-2 w-24 rounded cursor-pointer block mr-6 ml-auto"
+          className="btn hover:bg-red-300 bg-red-700 text-white active:bg-gray-500 p-2 w-24 rounded cursor-pointer block mr-6 ml-auto"
           id="btn-create"
           onClick={handleAddNewBook}
         >

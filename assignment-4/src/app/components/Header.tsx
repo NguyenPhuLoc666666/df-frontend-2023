@@ -1,19 +1,21 @@
-import React, { useContext, type FC } from 'react'
+import React, { type FC } from 'react'
 import Image from 'next/image'
 
 interface Props {
-  theme: string
   setTheme: React.Dispatch<React.SetStateAction<string>>
 }
-const Header: FC<Props> = ({ theme, setTheme }) => {
+const Header: FC<Props> = ({ setTheme }) => {
   const handleInputChange = (): void => {
-    console.log(theme)
-    let currentTheme = (prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark')
+    const currentTheme = (prevTheme: string) =>
+      prevTheme === 'dark' ? 'light' : 'dark'
     setTheme(currentTheme)
   }
   return (
-    <header className="dark:bg-indigo-950 dark:text-white dark:shadow-white bg-white w-full md:w-[90%] sticky top-0 left-0 p-4 shadow-md shadow-black z-[1000] mx-auto">
-      <nav className="flex justify-between">
+    <header className="dark:bg-gray-900 dark:text-white bg-white w-full sticky top-0 left-0 z-[1000]">
+      <nav
+        className="md:w-[90%] dark:bg-gray-950 dark:text-white shadow-md dark:shadow-white
+       shadow-black mx-auto w-full p-4 flex justify-between"
+      >
         <div className="text-2xl font-bold cursor-pointer">Bookstore</div>
         <div className="flex justify-center items-center">
           <div className="flex mx-4 border rounded-full">

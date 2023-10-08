@@ -1,3 +1,5 @@
+'use client'
+
 import React, { type FC, type ReactNode, useEffect, useState } from 'react'
 import BookTable from './BookTable'
 import DialogCreate from './DialogCreate'
@@ -19,7 +21,7 @@ const Body: FC = () => {
   })
   const [books, setBooks] = useState<IBook[]>([])
   const [searchingValue, setSearchingValue] = useState('')
-  const [filteredBooks, setFilteredBooks] = useState<IBook[]>(books)
+
   useEffect(() => {
     const storedData: string | null = localStorage.getItem('bookstore')
     if (storedData !== null && storedData !== '') {
@@ -29,17 +31,6 @@ const Body: FC = () => {
       storeData(MockTestData)
     }
   }, [])
-
-  useEffect(() => {
-    if (typeof searchingValue === 'string' && searchingValue.trim() !== '') {
-      const filteredData = books.filter((book) =>
-        book.bookName.toLowerCase().includes(searchingValue.toLowerCase()),
-      )
-      setFilteredBooks(filteredData)
-    } else {
-      setFilteredBooks(books)
-    }
-  }, [searchingValue, books])
 
   const storeData = (data: IBook[]): void => {
     setBooks(data)
@@ -99,8 +90,8 @@ const Body: FC = () => {
 
   const renderBooks = (
     books: IBook[],
-    currentPage,
-    recordsPerPage,
+    currentPage: number,
+    recordsPerPage: number,
   ): ReactNode => {
     return books.map((book: IBook, index: number) => (
       <Book
@@ -120,19 +111,19 @@ const Body: FC = () => {
     storeData(books)
     handleOpenDialogCreate()
     setSearchingValue('')
-    renderBooks(books, 1, 5)
     setTimeout(() => {
       alert('Add book successful!')
     }, 250)
   }
 
   return (
-    <article className="w-[90%] max-w-[1200px] relative mx-auto min-h-full">
+    <article className="dark:bg-gray-900 dark:text-white  w-[90%] max-w-[1200px] relative mx-auto min-h-full z-1">
       <section>
         <div className="flex flex-col md:flex-row justify-center md:justify-end items-center mt-4">
           <input
             type="text"
-            className="text-black text-lg rounded outline-none p-1 w-full md:w-[300px] border focus:border-solid focus:border-red-500 focus:shadow-red-500"
+            className="bg-white text-black text-lg rounded outline-none p-1 w-full md:w-[300px] border 
+            focus:border-solid focus:border-2 focus:border-red-500 focus:shadow-red-500"
             id="search-bar"
             placeholder="Search books..."
             value={searchingValue}
@@ -150,7 +141,11 @@ const Body: FC = () => {
             Add book
           </button>
         </div>
-        <BookTable books={filteredBooks} renderBooks={renderBooks} />
+        <BookTable
+          books={books}
+          renderBooks={renderBooks}
+          searchingValue={searchingValue}
+        />
       </section>
       {dialogCreate && (
         <DialogCreate

@@ -1,4 +1,5 @@
 import React, { type FC } from 'react'
+import { useRouter } from 'next/navigation'
 import { type IBook } from '../type/IBook'
 
 interface Props {
@@ -17,9 +18,9 @@ const Book: FC<Props> = ({
   recordsPerPage,
   setCurrentBook,
 }) => {
+  const router = useRouter()
   const handleEditBookInDialog = (): void => {
-    handleOpenDialog('dialogInfo')
-    setCurrentBook(book)
+    router.push(`/products/book/?id=${book.id}`)
   }
   const handleDeleteBookInDialog = (): void => {
     handleOpenDialog('dialogDelete')
@@ -60,7 +61,7 @@ const Book: FC<Props> = ({
             className="underline text-base m-1 w-full btn-edit hover:text-gray-500 text-yellow-600"
             onClick={handleEditBookInDialog}
           >
-            edit
+            view
           </button>
           <button
             className="underline text-base m-1 w-full btn-delete hover:text-gray-500 ml-2 text-red-700"
