@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+}
+
+.active {
+  background-color: rgb(104, 104, 196);
+  color: white;
+}
+
+.disable {
+  background-color: grey;
+}
+
+#dark-mode-toggle:checked + .toggle-indicator {
+  transform: translateX(100%);
+  background: linear-gradient(180deg, gainsboro, #5e5d5d);
+  transition: 0.3s;
+}
+
+#dark-mode-toggle:checked ~ .dark-mode-background {
+  background-color: #000000;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #000000;
+}
+
+@media only screen and (max-width: 46.1875em) {
+  .table-data__item::before {
+    content: attr(data-title) ': ';
+    float: left;
+  }
+}
