@@ -10,8 +10,10 @@ module.exports = {
     'next',
     'next/core-web-vitals',
     'prettier',
+    'standard-with-typescript',
+    'plugin:jsx-a11y/recommended',
   ],
-  ignorePatterns: ['node_modules/'],
+  ignorePatterns: ['node_modules/', 'eslintrc.js'],
   env: {
     es6: true,
     browser: true,
@@ -34,7 +36,16 @@ module.exports = {
       presets: [require.resolve('next/babel')],
     },
   },
-  rules: {},
+  rules: {
+    'comma-dangle': 'off',
+    '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+    semi: ['error', 'never'],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    'arrow-body-style': 'off',
+    'prefer-arrow-callback': 'off',
+    '@typescript-eslint/space-before-function-paren': ['error', 'never'],
+    'jsx-a11y/label-has-associated-control': 0,
+  },
   overrides: [
     {
       files: ['**/*.ts?(x)', '**/*.js?(x)'],
@@ -44,7 +55,14 @@ module.exports = {
         'react/function-component-definition': 'off',
         'no-shadow': 'off',
         'no-console': 'off',
+        '@typescript-eslint/no-misused-promises': [
+          'error',
+          {
+            checksVoidReturn: false,
+          },
+        ],
       },
     },
   ],
+  plugins: ['jsx-a11y'],
 }

@@ -18,7 +18,7 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+}): JSX.Element {
   const [theme, setTheme] = useState(() => {
     let savedDarkMode: string | null = null
     if (typeof window !== 'undefined') {

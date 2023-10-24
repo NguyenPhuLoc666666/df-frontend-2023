@@ -2,17 +2,15 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Body from './components/Body'
+import Body from '../components/Body'
 
-export default function Home(): JSX.Element {
+export default function ProductPage(): React.JSX.Element {
   const router = useRouter()
 
   useEffect(() => {
-    try {
-      router.push('/product')
-    } catch (error) {
-      alert('Something wrong with home page!')
-    }
+    const loginStr: string | null = localStorage.getItem('login')
+    if (loginStr === null) router.replace('/login')
+    else router.replace('?q=&page=1')
   }, [router])
 
   return (

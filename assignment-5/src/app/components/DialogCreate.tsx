@@ -1,36 +1,69 @@
-import React, { type FC, useState } from 'react'
+'use client'
+
+import React, { type FC } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { type TDialog } from '../type/TDialog'
 import { type IBook } from '../type/IBook'
 
 interface Props {
   handleAddBook: (book: IBook) => void
-  handleCloseDialogCreate: (data: string) => void
+  handleOpenDialog: (data: TDialog) => void
 }
-const DialogCreate: FC<Props> = ({
-  handleAddBook,
-  handleCloseDialogCreate,
-}) => {
-  const [book, setBook] = useState<IBook>({
-    id: '0',
-    bookName: '',
-    author: '',
-    topic: 'Programming',
-  })
-
+const DialogCreate: FC<Props> = ({ handleAddBook, handleOpenDialog }) => {
   const generateId = (): string => {
     const timestamp: string = Date.now().toString()
     const rand: number = Math.floor(Math.random() * 1000)
     return `${timestamp}-${rand}`
   }
 
-  const handleAddNewBook = (): void => {
+  const schema = z.object({
+    bookName: z
+      .string()
+      .min(5, { message: 'Book Name must be at least 5 character.' })
+      .refine(val => val.trim() !== '', {
+        message: 'Book Name is required',
+      }),
+    author: z
+      .string()
+      .regex(/^[a-zA-Z,.\s]+$/, {
+        message: 'Only allow uppercase and lowercase characters.',
+      })
+      .refine(val => val.trim() !== '', {
+        message: 'Author is required.',
+      }),
+    topic: z
+      .string()
+      .regex(
+        /^(Programming|Database|DevOps|Software Development|Computer Science)+$/,
+        {
+          message: 'Topic is required.',
+        },
+      ),
+  })
+
+  type TBookSchema = z.infer<typeof schema>
+
+  const form = useForm<TBookSchema>({
+    defaultValues: {
+      bookName: '',
+      author: '',
+      topic: 'Programming',
+    },
+    resolver: zodResolver(schema),
+  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form
+
+  const onAddNewBook: SubmitHandler<TBookSchema> = (data: TBookSchema) => {
     const generatedId: string = generateId()
-    setBook({ ...book, id: generatedId })
-    if (book.bookName === '' || book.author === '' || book.topic === '') {
-      alert('Please enter complete information when add new book!')
-      return
-    }
+    const book = { id: generatedId, ...data }
     handleAddBook(book)
-    handleCloseDialogCreate('dialogCreate')
+    handleOpenDialog('dialogCreate')
   }
 
   return (
@@ -44,52 +77,57 @@ const DialogCreate: FC<Props> = ({
         <button
           className="dark:text-white m-1 no-underline text-black text-2xl absolute top-2 right-4"
           onClick={() => {
-            handleCloseDialogCreate('dialogCreate')
+            handleOpenDialog('dialogCreate')
           }}
         >
           <span className="">&times;</span>
         </button>
       </div>
       <p className="text-lg font-bold text-center w-full my-4">Add book</p>
-      <form className="form m-auto">
+      <form className="form m-auto" onSubmit={handleSubmit(onAddNewBook)}>
         <div>
           <p className="label">Name</p>
           <input
             type="text"
-            className="text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border"
+            className={`text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border-2 
+            ${
+              errors.bookName?.message !== undefined
+                ? 'focus:border-red-500 border-red-500 border-2'
+                : ''
+            }`}
             id="input-name"
-            name="name"
-            placeholder="book name..."
-            value={book.bookName}
-            onChange={(e) => {
-              setBook({ ...book, bookName: e.target.value })
-            }}
+            placeholder="Type book name..."
+            {...register('bookName')}
           />
+          <p className="text-red-500">{errors.bookName?.message}</p>
         </div>
         <div>
           <p className="label">Author</p>
           <input
             type="text"
-            className="text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border"
+            className={`text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border-2
+            ${
+              errors.author?.message !== undefined
+                ? 'focus:border-red-500 border-red-500 border-2'
+                : ''
+            }`}
             id="input-author"
-            name="author"
-            placeholder="author..."
-            value={book.author}
-            onChange={(e) => {
-              setBook({ ...book, author: e.target.value })
-            }}
+            placeholder="Type author..."
+            {...register('author')}
           />
+          <p className="text-red-500">{errors.author?.message}</p>
         </div>
         <div>
           <p className="label">Topic</p>
           <select
-            name="topic"
             id="topic-select"
-            className="dark:bg-white text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border"
-            value={book.topic}
-            onChange={(e) => {
-              setBook({ ...book, topic: e.target.value })
-            }}
+            className={`text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border-2
+            ${
+              errors.topic?.message !== undefined
+                ? 'focus:border-red-500 border-red-500 border-2'
+                : ''
+            }`}
+            {...register('topic')}
           >
             <option value="Programming">Programming</option>
             <option value="Database">Database</option>
@@ -97,18 +135,18 @@ const DialogCreate: FC<Props> = ({
             <option value="Software Development">Software Development</option>
             <option value="Computer Science">Computer Science</option>
           </select>
+          <p className="text-red-500">{errors.topic?.message}</p>
+        </div>
+        <div className="flex justify-around mt-5 w-full">
+          <button
+            type="submit"
+            className="btn hover:bg-red-300 bg-red-700 text-white active:bg-gray-500 p-2 w-24 rounded cursor-pointer block mr-6 ml-auto"
+            id="btn-create"
+          >
+            Create
+          </button>
         </div>
       </form>
-      <div className="flex justify-around mt-5 w-full">
-        <button
-          type="submit"
-          className="btn hover:bg-red-300 bg-red-700 text-white active:bg-gray-500 p-2 w-24 rounded cursor-pointer block mr-6 ml-auto"
-          id="btn-create"
-          onClick={handleAddNewBook}
-        >
-          Create
-        </button>
-      </div>
     </div>
   )
 }

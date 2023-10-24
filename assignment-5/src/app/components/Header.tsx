@@ -6,7 +6,7 @@ interface Props {
 }
 const Header: FC<Props> = ({ setTheme }) => {
   const handleInputChange = (): void => {
-    const currentTheme = (prevTheme: string) =>
+    const currentTheme = (prevTheme: string): string =>
       prevTheme === 'dark' ? 'light' : 'dark'
     setTheme(currentTheme)
   }

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-export default function NotFound() {
+export default function NotFound(): JSX.Element {
   return (
     <main className="text-center dark:bg-gray-900 dark:text-white w-full min-h-full">
       <div className="m-auto relative top-24">
@@ -9,7 +9,7 @@ export default function NotFound() {
         <h2>Page not found</h2>
         <p>
           Go back to{' '}
-          <Link href="/products">
+          <Link href="/product">
             <span className="underline">HomePage</span>
           </Link>
         </p>

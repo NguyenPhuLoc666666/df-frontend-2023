@@ -1,9 +1,10 @@
 import React, { type FC } from 'react'
 import { type IBook } from '../type/IBook'
+import { type TDialog } from '../type/TDialog'
 
 interface Props {
   currentBook: IBook
-  handleOpenDialog: (dialog: string) => void
+  handleOpenDialog: (dialog: TDialog) => void
   handleDeleteBook: (currentBook: IBook) => void
 }
 const DialogDelete: FC<Props> = ({

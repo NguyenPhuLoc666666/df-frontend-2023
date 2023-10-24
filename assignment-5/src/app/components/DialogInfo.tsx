@@ -1,30 +1,70 @@
-import React, { type FC, useState, useEffect } from 'react'
+import React, { type FC } from 'react'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { type IBook } from '../type/IBook'
+import { type TDialog } from '../type/TDialog'
 
 interface Props {
   currentBook: IBook
   handleEditBook: (book: IBook) => void
-  handleOpenDialog: (data: string) => void
+  handleOpenDialog: (data: TDialog) => void
 }
 const DialogInfo: FC<Props> = ({
   currentBook,
   handleEditBook,
   handleOpenDialog,
 }) => {
-  const [book, setBook] = useState<IBook>(currentBook)
+  const schema = z.object({
+    bookName: z
+      .string()
+      .min(5, { message: 'Book Name must be at least 5 character.' })
+      .refine(val => val.trim() !== '', {
+        message: 'Book Name is required',
+      }),
+    author: z
+      .string()
+      .regex(/^[a-zA-Z,.\s]+$/, {
+        message: 'Only allow uppercase and lowercase characters.',
+      })
+      .refine(val => val.trim() !== '', {
+        message: 'Author is required.',
+      }),
+    topic: z
+      .string()
+      .regex(
+        /^(Programming|Database|DevOps|Software Development|Computer Science)+$/,
+        {
+          message: 'Topic is required.',
+        },
+      ),
+  })
 
-  useEffect(() => {
-    setBook(currentBook)
-  }, [currentBook])
+  type TBookSchema = z.infer<typeof schema>
 
-  const handleEditBookInDialog = (): void => {
-    if (book.bookName === '' || book.author === '' || book.topic === '') {
-      alert('Please enter complete information when edit current book!')
-      return
-    }
+  const form = useForm<TBookSchema>({
+    defaultValues: {
+      bookName: currentBook.bookName,
+      author: currentBook.author,
+      topic: currentBook.topic,
+    },
+    resolver: zodResolver(schema),
+  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form
 
+  const onEditBook: SubmitHandler<TBookSchema> = (data: TBookSchema) => {
+    console.log(data)
+    const currentBookId = currentBook.id
+    const book = { id: currentBookId, ...data }
+    alert(`edit in dialog ${book.id} ${book.bookName}`)
     handleEditBook(book)
+    handleOpenDialog('dialogInfo')
   }
+
   return (
     <div
       id="dialog-edit"
@@ -43,45 +83,50 @@ const DialogInfo: FC<Props> = ({
         </button>
       </div>
       <p className="text-lg font-bold text-center w-full my-4">Edit book</p>
-      <form className="form m-auto">
+      <form className="form m-auto" onSubmit={handleSubmit(onEditBook)}>
         <div>
           <p className="label">Name</p>
           <input
             type="text"
-            className="text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border"
+            className={`text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border-2
+            ${
+              errors.bookName?.message !== undefined
+                ? 'focus:border-red-500 border-red-500 border-2'
+                : ''
+            }`}
             id="edit-name"
-            name="name"
-            placeholder="book name..."
-            value={book.bookName}
-            onChange={(e) => {
-              setBook({ ...book, bookName: e.target.value })
-            }}
+            placeholder="Type book name..."
+            {...register('bookName')}
           />
+          <p className="text-red-500">{errors.bookName?.message}</p>
         </div>
         <div>
           <p className="label">Author</p>
           <input
             type="text"
-            className="text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border"
+            className={`text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border-2
+            ${
+              errors.author?.message !== undefined
+                ? 'focus:border-red-500 border-red-500 border-2'
+                : ''
+            }`}
             id="edit-author"
-            name="author"
-            placeholder="author..."
-            value={book.author}
-            onChange={(e) => {
-              setBook({ ...book, author: e.target.value })
-            }}
+            placeholder="Type author..."
+            {...register('author')}
           />
+          <p className="text-red-500">{errors.author?.message}</p>
         </div>
         <div>
           <p className="label">Topic</p>
           <select
-            name="topic"
             id="edit-topic-select"
-            className="dark:bg-white text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border"
-            value={book.topic}
-            onChange={(e) => {
-              setBook({ ...book, topic: e.target.value })
-            }}
+            className={`text-black text-lg rounded mb-4 p-1 border-solid w-[300px] border-2
+            ${
+              errors.topic?.message !== undefined
+                ? 'focus:border-red-500 border-red-500 border-2'
+                : ''
+            }`}
+            {...register('topic')}
           >
             <option value="Programming">Programming</option>
             <option value="Database">Database</option>
@@ -89,18 +134,18 @@ const DialogInfo: FC<Props> = ({
             <option value="Software Development">Software Development</option>
             <option value="Computer Science">Computer Science</option>
           </select>
+          <p className="text-red-500">{errors.topic?.message}</p>
+        </div>
+        <div className="flex justify-around mt-5 w-full">
+          <button
+            type="submit"
+            id="btn-edit"
+            className="btn hover:bg-red-300 bg-red-700 text-white active:bg-gray-500 p-2 w-24 rounded cursor-pointer block mr-6 ml-auto"
+          >
+            Edit
+          </button>
         </div>
       </form>
-      <div className="flex justify-around mt-5 w-full">
-        <button
-          onClick={handleEditBookInDialog}
-          type="submit"
-          id="btn-edit"
-          className="btn hover:bg-red-300 bg-red-700 text-white active:bg-gray-500 p-2 w-24 rounded cursor-pointer block mr-6 ml-auto"
-        >
-          Edit
-        </button>
-      </div>
     </div>
   )
 }
